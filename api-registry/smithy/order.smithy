@@ -84,6 +84,9 @@ operation GetOrder {
 
         @required
         $status
+
+        @required
+        $userId
     }
 
     errors: [

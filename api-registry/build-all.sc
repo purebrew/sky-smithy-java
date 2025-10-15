@@ -18,7 +18,6 @@ import mill.api.daemon.SystemStreams
 import mill.javalib.publish.Artifact
 import mill.javalib.publish.LocalM2Publisher
 import mill.javalib.publish.Pom
-import mill.javalib.publish.PomSettings
 import mill.javalib.publish.PublishInfo
 import os.Path
 import os.zip.ZipSource
@@ -170,6 +169,22 @@ def publishWorldArtifact: Unit = {
     manifestFile +: smithyFiles
   )
 
+  val dependencies = SmithyBuildConfig
+    .load((os.pwd / "smithy-build.json").toNIO)
+    .getMaven
+    .toScala
+    .toSeq
+    .flatMap(_.getDependencies.asScala)
+    .filterNot(_.contains("openapi"))
+    .map(_.split(":"))
+    .collect { case Array(groupId, artifactId, version) =>
+      <dependency>
+        <groupId>{groupId}</groupId>
+        <artifactId>{artifactId}</artifactId>
+        <version>{version}</version>
+      </dependency>
+    }
+
   val pomContentNode =
     <project
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
@@ -182,6 +197,10 @@ def publishWorldArtifact: Unit = {
         <artifactId>{worldArtifact.id}</artifactId>
         <packaging>jar</packaging>
         <version>{worldArtifact.version}</version>
+
+        <dependencies>
+          {dependencies}
+        </dependencies>
       </project>
 
   val pp = new PrettyPrinter(120, 4)
