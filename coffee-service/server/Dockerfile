@@ -6,3 +6,4 @@ FROM amazoncorretto:21-alpine3.22
 WORKDIR /root
 COPY --from=builder server .
 ENTRYPOINT ["/root/bin/server"]
+EXPOSE 80

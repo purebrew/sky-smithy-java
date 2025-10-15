@@ -1,0 +1,22 @@
+name: sky-smithy-java
+
+services:
+  coffee-service:
+     build: coffee-service/server
+     networks:
+       - backend
+     ports:
+       - "8888:80"
+
+  apigw-krakend:
+    build: apigw-krakend
+    networks:
+      - backend
+    ports:
+      - "8080:80"
+
+networks:
+  backend:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"

@@ -4,7 +4,6 @@
     "java-client-codegen": {
       "service": "com.example#CoffeeShop",
       "namespace": "io.smithy.java.client.example",
-      "headerFile": "../license.txt",
       "protocol": "aws.protocols#restJson1"
     }
   }

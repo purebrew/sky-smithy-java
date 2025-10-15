@@ -7,7 +7,7 @@ use tech.purebrew.apigw#publicService
 
 @title("Coffee Shop Service")
 @restJson1
-@publicService(host: "coffeeshop", gatewayBasePath: "/v1/coffee")
+@publicService(host: "coffee-service", gatewayBasePath: "/v1/coffee")
 service CoffeeShop {
     version: "2025-10-01"
     operations: [

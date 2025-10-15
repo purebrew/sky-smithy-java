@@ -21,7 +21,7 @@ public class CafeService implements Runnable {
     @Override
     public void run() {
         Server server = Server.builder()
-                .endpoints(URI.create("http://0.0.0.0:8888"))
+                .endpoints(URI.create("http://0.0.0.0:80"))
                 .addService(
                         CoffeeShop.builder()
                                 .addCreateOrderOperation(new CreateOrder())

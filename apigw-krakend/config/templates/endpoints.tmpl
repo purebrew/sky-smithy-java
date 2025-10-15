@@ -1,0 +1,74 @@
+[
+  {
+    "endpoint" : "/v1/coffee/orders",
+    "input_headers" : [
+    ],
+    "method" : "GET",
+    "backend" : [
+      {
+        "method" : "GET",
+        "url_pattern" : "/orders",
+        "host" : [
+          "http://coffee-service"
+        ]
+      }
+    ]
+  },
+  {
+    "endpoint" : "/v1/coffee/orders",
+    "input_headers" : [
+      "X-User"
+    ],
+    "method" : "POST",
+    "backend" : [
+      {
+        "method" : "POST",
+        "url_pattern" : "/orders",
+        "host" : [
+          "http://coffee-service"
+        ]
+      }
+    ],
+    "extra_config" : {
+      "auth/validator" : {
+        {{ include "jwk-settings" }},
+        "propagate_claims" : [
+          [
+            "sub",
+            "X-User"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "endpoint" : "/v1/coffee/orders/{id}",
+    "input_headers" : [
+    ],
+    "method" : "GET",
+    "backend" : [
+      {
+        "method" : "GET",
+        "url_pattern" : "/orders/{id}",
+        "host" : [
+          "http://coffee-service"
+        ]
+      }
+    ]
+  },
+  {
+    "endpoint" : "/v1/coffee/menu",
+    "input_headers" : [
+    ],
+    "method" : "GET",
+    "backend" : [
+      {
+        "method" : "GET",
+        "url_pattern" : "/menu",
+        "host" : [
+          "http://coffee-service"
+        ]
+      }
+    ]
+  }
+]

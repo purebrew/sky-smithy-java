@@ -1,0 +1,3 @@
+"alg": "HS256",
+        "jwk_local_path": "./jwks.json",
+        "disable_jwk_security": true

@@ -3,8 +3,7 @@
   "plugins": {
     "java-server-codegen": {
       "service": "com.example#CoffeeShop",
-      "namespace": "io.smithy.java.server.example",
-      "headerFile": "../license.txt"
+      "namespace": "io.smithy.java.server.example"
     }
   }
 }
