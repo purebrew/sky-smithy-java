@@ -1,18 +1,25 @@
 [
   {
-    "endpoint" : "/v1/coffee/orders",
+    "endpoint" : "/v1/coffee/orders/{id}",
     "input_headers" : [
     ],
     "method" : "GET",
     "backend" : [
       {
         "method" : "GET",
-        "url_pattern" : "/orders",
+        "url_pattern" : "/orders/{id}",
         "host" : [
           "http://coffee-service"
         ]
       }
-    ]
+    ],
+    "extra_config" : {
+      "auth/validator" : {
+        {{ include "jwk-settings" }},
+        "propagate_claims" : [
+        ]
+      }
+    }
   },
   {
     "endpoint" : "/v1/coffee/orders",
@@ -42,21 +49,6 @@
     }
   },
   {
-    "endpoint" : "/v1/coffee/orders/{id}",
-    "input_headers" : [
-    ],
-    "method" : "GET",
-    "backend" : [
-      {
-        "method" : "GET",
-        "url_pattern" : "/orders/{id}",
-        "host" : [
-          "http://coffee-service"
-        ]
-      }
-    ]
-  },
-  {
     "endpoint" : "/v1/coffee/menu",
     "input_headers" : [
     ],
@@ -69,6 +61,35 @@
           "http://coffee-service"
         ]
       }
-    ]
+    ],
+    "extra_config" : {
+      "auth/validator" : {
+        {{ include "jwk-settings" }},
+        "propagate_claims" : [
+        ]
+      }
+    }
+  },
+  {
+    "endpoint" : "/v1/coffee/orders",
+    "input_headers" : [
+    ],
+    "method" : "GET",
+    "backend" : [
+      {
+        "method" : "GET",
+        "url_pattern" : "/orders",
+        "host" : [
+          "http://coffee-service"
+        ]
+      }
+    ],
+    "extra_config" : {
+      "auth/validator" : {
+        {{ include "jwk-settings" }},
+        "propagate_claims" : [
+        ]
+      }
+    }
   }
 ]

@@ -83,19 +83,6 @@ def generateKrakendEndpointConfig(model: Model): String = {
         member.getTrait(classOf[HttpHeaderTrait]).toScala.map(_.getValue)
       }
 
-    val base = JsonObject(
-      "endpoint" -> s"${publicService.getGatewayBasePath}${http.getUri}".asJson,
-      "input_headers" -> inputHeaders.map(Json.fromString).asJson,
-      "method" -> http.getMethod.asJson,
-      "backend" -> Json.arr(
-        Json.obj(
-          "method" -> http.getMethod.asJson,
-          "url_pattern" -> http.getUri.toString.asJson,
-          "host" -> Json.arr(s"http://${publicService.getHost}".asJson).asJson
-        )
-      )
-    )
-
     val tokenClaimsAndHeaders = inputMembers
       .flatMap { member =>
         member.getTrait(classOf[JwtClaimTrait]).toScala.map { jwtClaim =>
@@ -106,21 +93,28 @@ def generateKrakendEndpointConfig(model: Model): String = {
         }
       }
 
-    if tokenClaimsAndHeaders.isEmpty then base
-    else
-      base.add(
-        "extra_config",
+    JsonObject(
+      "endpoint" -> s"${publicService.getGatewayBasePath}${http.getUri}".asJson,
+      "input_headers" -> inputHeaders.map(Json.fromString).asJson,
+      "method" -> http.getMethod.asJson,
+      "backend" -> Json.arr(
         Json.obj(
-          "auth/validator" -> Json.obj(
-            "JWK_SETTINGS" -> "PLACEHOLDER".asJson,
-            "propagate_claims" -> Json.arr(
-              tokenClaimsAndHeaders.map { case (claim, header) =>
-                Json.arr(claim.asJson, header.asJson)
-              }.toSeq*
-            )
+          "method" -> http.getMethod.asJson,
+          "url_pattern" -> http.getUri.toString.asJson,
+          "host" -> Json.arr(s"http://${publicService.getHost}".asJson).asJson
+        )
+      ),
+      "extra_config" -> Json.obj(
+        "auth/validator" -> Json.obj(
+          "JWK_SETTINGS" -> "PLACEHOLDER".asJson,
+          "propagate_claims" -> Json.arr(
+            tokenClaimsAndHeaders.map { case (claim, header) =>
+              Json.arr(claim.asJson, header.asJson)
+            }.toSeq*
           )
         )
       )
+    )
 
   val jsonString = Json.arr(endpointConfigs.toSeq.map(_.asJson)*).spaces2
   jsonString.replaceAll(
