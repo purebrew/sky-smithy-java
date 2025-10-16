@@ -53,18 +53,6 @@ public class InlinePublicServices implements ProjectionTransformer {
                                 ).toList()
                 );
 
-//        var publicServiceIds = publicServices.stream().map(Shape::getId).collect(Collectors.toSet());
-//        var withBearerAuth = transformer.mapShapes(model, shape ->
-//           shape.getTrait(PublicServiceTrait.class).map(
-//                    publicServiceTrait -> Shape.shapeToBuilder(shape).addTrait(new HttpBearerAuthTrait()).build()
-//           ).orElse(shape)
-//        );
-
-//        var publicServiceTraitsRemoved = transformer.removeTraitsIf(
-//                withBearerAuth,
-//                (shape, trait) -> publicServiceIds.contains(shape.getId()) && trait instanceof PublicServiceTrait
-//        );
-
         return transformer.mapTraits(withBearerAuth, (shape, trait) -> {
             if (trait instanceof HttpTrait httpTrait) {
                 return Optional.ofNullable(publicOperationMap.get(shape.getId())).map(
