@@ -6,6 +6,7 @@ import software.amazon.smithy.model.Model;
 import software.amazon.smithy.model.knowledge.TopDownIndex;
 import software.amazon.smithy.model.pattern.UriPattern;
 import software.amazon.smithy.model.shapes.Shape;
+import software.amazon.smithy.model.traits.HttpBearerAuthTrait;
 import software.amazon.smithy.model.traits.HttpTrait;
 
 import java.util.Optional;
@@ -39,14 +40,32 @@ public class InlinePublicServices implements ProjectionTransformer {
                 pubOp -> pubOp.publicService
         ));
 
-        var publicServiceIds = publicServices.stream().map(Shape::getId).collect(Collectors.toSet());
+        var withBearerAuth =
+                transformer.replaceShapes(
+                        model,
+                        publicServices
+                                .stream()
+                                .map(service ->
+                                        Shape.shapeToBuilder(service)
+                                                .addTrait(new HttpBearerAuthTrait())
+                                                .removeTrait(PublicServiceTrait.ID)
+                                                .build()
+                                ).toList()
+                );
 
-        var publicServiceTraitsRemoved = transformer.removeTraitsIf(
-                model,
-                (shape, trait) -> publicServiceIds.contains(shape.getId()) && trait instanceof PublicServiceTrait
-        );
+//        var publicServiceIds = publicServices.stream().map(Shape::getId).collect(Collectors.toSet());
+//        var withBearerAuth = transformer.mapShapes(model, shape ->
+//           shape.getTrait(PublicServiceTrait.class).map(
+//                    publicServiceTrait -> Shape.shapeToBuilder(shape).addTrait(new HttpBearerAuthTrait()).build()
+//           ).orElse(shape)
+//        );
 
-        return transformer.mapTraits(publicServiceTraitsRemoved, (shape, trait) -> {
+//        var publicServiceTraitsRemoved = transformer.removeTraitsIf(
+//                withBearerAuth,
+//                (shape, trait) -> publicServiceIds.contains(shape.getId()) && trait instanceof PublicServiceTrait
+//        );
+
+        return transformer.mapTraits(withBearerAuth, (shape, trait) -> {
             if (trait instanceof HttpTrait httpTrait) {
                 return Optional.ofNullable(publicOperationMap.get(shape.getId())).map(
                         publicServiceTrait ->
