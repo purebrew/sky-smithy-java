@@ -20,7 +20,7 @@ services:
     networks:
       - backend
     ports:
-      - "80:80"
+      - "7777:80"
 
 networks:
   backend:
