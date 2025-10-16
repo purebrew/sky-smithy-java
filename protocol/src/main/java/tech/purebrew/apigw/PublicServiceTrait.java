@@ -49,7 +49,7 @@ public class PublicServiceTrait extends AbstractTrait implements ToSmithyBuilder
     }
 
     @Override
-    public SmithyBuilder<PublicServiceTrait> toBuilder() {
+    public Builder toBuilder() {
         return new Builder().host(host).gatewayBasePath(gatewayBasePath);
     }
 

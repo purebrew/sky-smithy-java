@@ -15,6 +15,13 @@ services:
     ports:
       - "8080:80"
 
+  swagger-ui:
+    build: swagger-ui
+    networks:
+      - backend
+    ports:
+      - "80:80"
+
 networks:
   backend:
     driver: bridge

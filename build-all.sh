@@ -18,4 +18,5 @@ cd "$SCRIPT_DIR/coffee-service"
 
 cd "$SCRIPT_DIR"
 cp api-registry/build/endpoints.tmpl apigw-krakend/config/templates/
-
+cp api-registry/build/smithy/source/openapi/CoffeeShop.openapi.json swagger-ui/resources/internal.json
+cp api-registry/build/smithy/publicServices/openapi/CoffeeShop.openapi.json swagger-ui/resources/public.json

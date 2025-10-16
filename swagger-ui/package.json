@@ -1,0 +1,11 @@
+{
+  "name": "swagger-ui",
+  "version": "0.1.0",
+  "description": "OpenAPI Browser",
+  "main": "index.js",
+  "author": "PureBrew",
+  "license": "ISC",
+  "dependencies": {
+    "swagger-ui-express": "^5.0.1"
+  }
+}

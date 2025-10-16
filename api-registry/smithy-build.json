@@ -19,7 +19,10 @@
         {
           "name": "excludeShapesByTrait",
           "args": { "traits": ["tech.purebrew.apigw#jwtClaim", "internal"] }
-        }
+        },
+	{
+          "name": "inlinePublicServices"
+	}
       ]
     }
   },
