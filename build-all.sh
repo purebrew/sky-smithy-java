@@ -17,7 +17,7 @@ cd "$SCRIPT_DIR/coffee-service"
 ./gradlew distZip
 
 cd "$SCRIPT_DIR"
-mkdir -p swagger-io/resources
+mkdir -p swagger-ui/resources
 cp api-registry/build/endpoints.tmpl apigw-krakend/config/templates/
 cp api-registry/build/smithy/source/openapi/CoffeeShop.openapi.json swagger-ui/resources/internal.json
 cp api-registry/build/smithy/publicServices/openapi/CoffeeShop.openapi.json swagger-ui/resources/public.json
